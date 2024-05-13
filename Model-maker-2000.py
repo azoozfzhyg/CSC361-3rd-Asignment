@@ -18,7 +18,7 @@ from sklearn.cluster import KMeans
 from sklearn.cluster import DBSCAN
 from sklearn.cluster import AgglomerativeClustering
 ###
-import sklearn.model_selection as GridsearchCV
+from sklearn.model_selection import GridsearchCV
 
 import numpy as np
 import pandas as pd
