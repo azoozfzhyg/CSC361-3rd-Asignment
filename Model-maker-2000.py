@@ -68,40 +68,7 @@ please_choose_model = (int)(input("please choose the model you want to use:\n\
     16.Agglomerative Clustering\n\
     17.all models\n"))
 
-if please_choose_model == 1:
-    model = svm.SVC()
-elif please_choose_model == 2:
-    model = NearestNeighbors()
-elif please_choose_model == 3:
-    model = tree.DecisionTreeClassifier()
-elif please_choose_model == 4:
-    model = RandomForestClassifier()
-elif please_choose_model == 5:
-    model = GradientBoostingClassifier()
-elif please_choose_model == 6:
-    model = MLPClassifier()
-elif please_choose_model == 7:
-    model = GaussianNB()
-elif please_choose_model == 8:
-    model = AdaBoostClassifier()
-elif please_choose_model == 9:
-    model = LinearDiscriminantAnalysis()
-elif please_choose_model == 10:
-    model = QuadraticDiscriminantAnalysis()
-elif please_choose_model == 11:
-    model = LinearRegression()
-elif please_choose_model == 12:
-    model = Ridge()
-elif please_choose_model == 13:
-    model = SVR()
-elif please_choose_model == 14:
-    model = KMeans()
-elif please_choose_model == 15:
-    model = DBSCAN()
-elif please_choose_model == 16:
-    model = AgglomerativeClustering()
-elif please_choose_model == 17:
-    model = [svm.SVC(), NearestNeighbors(), tree.DecisionTreeClassifier(), RandomForestClassifier(), GradientBoostingClassifier(), MLPClassifier(), GaussianNB(), AdaBoostClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis(), LinearRegression(), Ridge(), SVR(), KMeans(), DBSCAN(), AgglomerativeClustering()]
+model = [svm.SVC(), NearestNeighbors(), tree.DecisionTreeClassifier(), RandomForestClassifier(), GradientBoostingClassifier(), MLPClassifier(), GaussianNB(), AdaBoostClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis(), LinearRegression(), Ridge(), SVR(), KMeans(), DBSCAN(), AgglomerativeClustering()]
 
 
 
