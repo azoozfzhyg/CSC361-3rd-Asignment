@@ -18,7 +18,7 @@ from sklearn.cluster import KMeans
 from sklearn.cluster import DBSCAN
 from sklearn.cluster import AgglomerativeClustering
 ###
-from sklearn.model_selection import GridsearchCV
+from sklearn.model_selection import GridSearchCV
 
 import numpy as np
 import pandas as pd
@@ -46,7 +46,7 @@ y = data['target_column']               # Target variable
 ##
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-please_choose_model = (int)(input("please choose the model you want to use:\n\
+model_choice = (int)(input("please choose the model you want to use:\n\
     Classification Models\n\
     1. Support Vector Machine\n\
     2. K-Nearest Neighbors\n\
@@ -68,7 +68,39 @@ please_choose_model = (int)(input("please choose the model you want to use:\n\
     16.Agglomerative Clustering\n\
     17.all models\n"))
 
-model = [svm.SVC(), NearestNeighbors(), tree.DecisionTreeClassifier(), RandomForestClassifier(), GradientBoostingClassifier(), MLPClassifier(), GaussianNB(), AdaBoostClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis(), LinearRegression(), Ridge(), SVR(), KMeans(), DBSCAN(), AgglomerativeClustering()]
+model_names = {'1':'SVM', '2':'KNN', '3':'Decision Tree', '4':'Random Forest', '5':'Gradient Boosting',
+                '6':'Neural Network', '7':'Naive Bayes', '8':'AdaBoost', '9':'LDA', '10':'QDA',
+                '11':'Linear Regression', '12':'Ridge Regression', '13':'SVR', '14':'KMeans', '15':'DBSCAN',
+                '16':'Agglomerative Clustering'}
+
+model_of_choice = {'SVR':svm.SVC(), 'KNN':NearestNeighbors(), 'Decision Tree':tree.DecisionTreeClassifier(),
+                    'Random Forest':RandomForestClassifier(), 'Gradient Boosting':GradientBoostingClassifier(),
+                    'Neural Network':MLPClassifier(), 'Naive Bayes':GaussianNB(), 'AdaBoost':AdaBoostClassifier(),
+                    'LDA':LinearDiscriminantAnalysis(), 'QDA':QuadraticDiscriminantAnalysis(),
+                    'Linear Regression':LinearRegression(), 'Ridge Regression':Ridge(), 'SVR':SVR(),
+                    'KMeans':KMeans(), 'DBSCAN':DBSCAN(), 'Agglomerative Clustering':AgglomerativeClustering()}
+
+model = model_of_choice[model_names[model_choice]]
+
+#somehow get param_grids???
+
+def hyperTuning(x_train , y_train , model):  # Example of hyperparameter tuning for RandomForest
+    grid_search = GridSearchCV(estimator=model, param_grid=param_grids[model_names[model_choice]], cv=5 , error_score='raise') # with using 5 fold cross-validation
+    grid_search.fit(x_train, y_train)
+    best_params = grid_search.best_params_
+    print(f"Best parameters for {model_names[model_choice]} : ", best_params)
+    return grid_search.best_estimator_ , grid_search.best_score_
+
+
+model.fit(X_train, y_train)
+print(f"Results for {model_names[model_choice]} before tuning :")
+predictions = model.predict(X_test)
+print(classification_report(y_test, predictions))
+tuned_model, score = hyperTuning(X_train, y_train, model)
+print(f"\nResults for {model_names[model_choice]} after tuning :")
+predictions_after = tuned_model.predict(X_test)
+print(classification_report(y_test, predictions_after))
+
 
 
 
