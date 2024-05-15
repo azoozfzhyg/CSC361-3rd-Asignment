@@ -83,8 +83,26 @@ model_of_choice = {'SVR':svm.SVC(), 'KNN':NearestNeighbors(), 'Decision Tree':tr
 model = model_of_choice[model_names[model_choice]]
 
 #somehow get param_grids???
+#Got it ;}
+param_grids = {
+    'SVM': {'C': [0.1, 1, 10], 'kernel': ['linear', 'rbf']},
+    'KNN': {'n_neighbors': [3, 5, 7], 'algorithm': ['auto', 'ball_tree', 'kd_tree']},
+    'Decision Tree': {'max_depth': [3, 5, 7], 'min_samples_split': [2, 5, 10]},
+    'Random Forest': {'n_estimators': [100, 200, 300], 'max_depth': [5, 10, None]},
+    'Gradient Boosting': {'n_estimators': [50, 100, 200], 'learning_rate': [0.01, 0.1, 0.2]},
+    'Neural Network': {'hidden_layer_sizes': [(50,), (100,), (200,)], 'activation': ['relu', 'tanh', 'logistic']},
+    'AdaBoost': {'n_estimators': [50, 100, 200], 'learning_rate': [0.01, 0.1, 1]},
+    'LDA': {'solver': ['svd', 'lsqr'], 'shrinkage': [None, 'auto']},
+    'QDA': {'reg_param': [0.0, 0.1, 0.2]},
+    'Linear Regression': {'normalize': [True, False]},
+    'Ridge Regression': {'alpha': [0.1, 1, 10]},
+    'SVR': {'C': [0.1, 1, 10], 'kernel': ['linear', 'rbf']},
+    'KMeans': {'n_clusters': [2, 3, 4]},
+    'DBSCAN': {'eps': [0.1, 0.5, 1.0], 'min_samples': [5, 10, 20]},
+    'Agglomerative Clustering': {'n_clusters': [2, 3, 4]}
+}
 
-def hyperTuning(x_train , y_train , model):  # Example of hyperparameter tuning for RandomForest
+def hyperTuning(x_train , y_train , model):
     grid_search = GridSearchCV(estimator=model, param_grid=param_grids[model_names[model_choice]], cv=5 , error_score='raise') # with using 5 fold cross-validation
     grid_search.fit(x_train, y_train)
     best_params = grid_search.best_params_
