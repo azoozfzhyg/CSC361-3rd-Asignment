@@ -73,7 +73,7 @@ model_names = {'1':'SVM', '2':'KNN', '3':'Decision Tree', '4':'Random Forest', '
                 '11':'Linear Regression', '12':'Ridge Regression', '13':'SVR', '14':'KMeans', '15':'DBSCAN',
                 '16':'Agglomerative Clustering'}
 
-model_of_choice = {'SVR':svm.SVC(), 'KNN':NearestNeighbors(), 'Decision Tree':tree.DecisionTreeClassifier(),
+model_of_choice = {'SVM':svm.SVC(), 'KNN':NearestNeighbors(), 'Decision Tree':tree.DecisionTreeClassifier(),
                     'Random Forest':RandomForestClassifier(), 'Gradient Boosting':GradientBoostingClassifier(),
                     'Neural Network':MLPClassifier(), 'Naive Bayes':GaussianNB(), 'AdaBoost':AdaBoostClassifier(),
                     'LDA':LinearDiscriminantAnalysis(), 'QDA':QuadraticDiscriminantAnalysis(),
@@ -109,7 +109,7 @@ def hyperTuning(x_train , y_train , model):
     print(f"Best parameters for {model_names[model_choice]} : ", best_params)
     return grid_search.best_estimator_ , grid_search.best_score_
 
-
+#time the model's performance
 model.fit(X_train, y_train)
 print(f"Results for {model_names[model_choice]} before tuning :")
 predictions = model.predict(X_test)
