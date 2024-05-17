@@ -1,7 +1,6 @@
 #Classifiers
 from sklearn import svm
 from sklearn.neighbors import NearestNeighbors
-import sklearn.linear_model
 from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier#ensemble
 from sklearn.ensemble import GradientBoostingClassifier
