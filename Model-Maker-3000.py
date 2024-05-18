@@ -26,6 +26,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.metrics import adjusted_rand_score, adjusted_mutual_info_score, homogeneity_score
+from sklearn.metrics import completeness_score, v_measure_score, silhouette_score
+from sklearn.metrics import calinski_harabasz_score, davies_bouldin_score
+
 
 # data1 = pd.read_csv("C:\\Users\\Admin\\Desktop\\DataSets\\heart_data.csv")
 # data2 = pd.read_csv("C:\\Users\\Admin\\Desktop\\DataSets\\cardio_train.csv")
@@ -43,12 +47,31 @@ def regression_report(y_true, y_pred):
         'Root Mean Squared Error (RMSE)': rmse,
         'R² Score': r2
     }
+    return report
 
 print("wlecome to model maker 2000\n\
     please enter the dataset you want to use:\n\
     1.Heart Disease Dataset\n\
     2.Cardiovascular Disease dataset\n\
     3.Heart Failure Prediction\n")
+
+def clustering_report(X, labels_true, labels_pred):
+    report = {}
+    
+    # External metrics (require ground truth labels)
+    if labels_true is not None:
+        report['Adjusted Rand Index (ARI)'] = adjusted_rand_score(labels_true, labels_pred)
+        report['Adjusted Mutual Information (AMI)'] = adjusted_mutual_info_score(labels_true, labels_pred)
+        report['Homogeneity'] = homogeneity_score(labels_true, labels_pred)
+        report['Completeness'] = completeness_score(labels_true, labels_pred)
+        report['V-Measure'] = v_measure_score(labels_true, labels_pred)
+    
+    # Internal metrics (do not require ground truth labels)
+    report['Silhouette Coefficient'] = silhouette_score(X, labels_pred)
+    report['Calinski-Harabasz Index'] = calinski_harabasz_score(X, labels_pred)
+    report['Davies-Bouldin Index'] = davies_bouldin_score(X, labels_pred)
+    for metric, value in report.items():
+        print(f"{metric}: {value}")
 
 dataset_choice = (int)(input())
 if dataset_choice == 1 :
@@ -60,7 +83,7 @@ elif dataset_choice == 3:
 ##
 
 data = pd.read_csv(dataset_choice)
-X = data.drop(data.columns[-1], axis=1) 
+X = data.drop(data.columns[-1], axis=1)
 y = data[data.columns[-1]]  # Target variable
 X = StandardScaler().fit_transform(X)
 
@@ -128,10 +151,9 @@ Clustering Models\n\
 14.KMeans\n\
 15.DBSCAN\n\
 16.Agglomerative Clustering\n\
-17.all models\n\
-18.Exit\n"))
+17.Exit\n"))
 
-while model_choice != '18':  # This creates an infinite loop
+while model_choice != '17':  # This creates an infinite loop
 
     model = model_of_choice[model_names[model_choice]]
     
@@ -143,12 +165,22 @@ while model_choice != '18':  # This creates an infinite loop
         print(classification_report(y_test, predictions))
     elif model_choice in range(11, 13):
         print(regression_report(y_test, predictions))
-    else:
-        pass # clustering models report not implemented yet
+    elif model_choice in range(14, 16):
+        labels_pred = model.labels_
+        labels_true = y_train if 'target_column' in data.columns else None
+        clustering_report(X_train, labels_true, labels_pred)
+
     tuned_model, score = hyperTuning(X_train, y_train, model)
     print(f"\nResults for {model_names[model_choice]} after tuning :")
     predictions_after = tuned_model.predict(X_test)
-    print(classification_report(y_test, predictions_after))
+    if model_choice in range(1, 10):
+        print(classification_report(y_test, predictions))
+    elif model_choice in range(11, 13):
+        print(regression_report(y_test, predictions))
+    elif model_choice in range(14, 16):
+        labels_pred = model.labels_
+        labels_true = y_train if 'target_column' in data.columns else None
+        clustering_report(X_train, labels_true, labels_pred)
     
     model_choice = (input("please choose the model you want to use:\n\
     Classification Models\n\
@@ -170,6 +202,5 @@ while model_choice != '18':  # This creates an infinite loop
     14.KMeans\n\
     15.DBSCAN\n\
     16.Agglomerative Clustering\n\
-    17.all models\n\
-    18.Exit\n"))
+    17.Exit\n"))
 
