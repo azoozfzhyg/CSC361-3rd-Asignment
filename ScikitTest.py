@@ -1,12 +1,22 @@
-from sklearn.datasets import load_breast_cancer
-from sklearn.neighbors import KNeighborsRegressor
-import matplotlib.pylab as plt
-X, y = load_breast_cancer(return_X_y=True)
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import RocCurveDisplay
+from sklearn.datasets import load_wine
 
-mod = KNeighborsRegressor()
+X, y = load_wine(return_X_y=True)
+y = y == 2  # make binary
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+svc = SVC(random_state=42)
+svc.fit(X_train, y_train)
 
-mod.fit(X, y)
+svc_disp = RocCurveDisplay.from_estimator(svc, X_test, y_test)
 
-prediction = mod.predict(X)
+import matplotlib.pyplot as plt
+from sklearn.ensemble import RandomForestClassifier
 
-plt.scatter(prediction, y)
+rfc = RandomForestClassifier(n_estimators=10, random_state=42)
+rfc.fit(X_train, y_train)
+
+ax = plt.gca()
+rfc_disp = RocCurveDisplay.from_estimator(rfc, X_test, y_test, ax=ax, alpha=0.8)
+svc_disp.plot(ax=ax, alpha=0.8)
