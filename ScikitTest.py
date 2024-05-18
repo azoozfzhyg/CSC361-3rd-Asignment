@@ -16,7 +16,8 @@ from sklearn.ensemble import RandomForestClassifier
 
 rfc = RandomForestClassifier(n_estimators=10, random_state=42)
 rfc.fit(X_train, y_train)
-
+plt.savefig("ROC curve comparison.png")
 ax = plt.gca()
 rfc_disp = RocCurveDisplay.from_estimator(rfc, X_test, y_test, ax=ax, alpha=0.8)
 svc_disp.plot(ax=ax, alpha=0.8)
+
